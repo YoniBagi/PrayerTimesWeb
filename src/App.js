@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import './App.css';
 import PrayerList from './components/PrayerList';
+import Clock from './components/Clock';
+import HebrewDate from './components/HebrewDate';
+import { getCurrentPrayer } from './utils/timeUtils';
 
 function App() {
   const [advertising, setAdvertising] = useState(null);
@@ -9,6 +13,7 @@ function App() {
     mincha: null,
     arvit: null
   });
+  const [currentPrayer, setCurrentPrayer] = useState(null);
 
   useEffect(() => {
     // Fetch advertising
@@ -29,10 +34,8 @@ function App() {
         for (const prayer of prayerTypes) {
           const response = await fetch(`https://timesprayersdb.firebaseio.com/${prayer}.json`);
           const data = await response.json();
-          console.log(`${prayer} data:`, data);
           results[prayer] = data;
         }
-
         setPrayers(results);
       } catch (error) {
         console.error('Error fetching prayers:', error);
@@ -42,33 +45,58 @@ function App() {
     fetchPrayers();
   }, []);
 
+  // Update current prayer based on time
+  useEffect(() => {
+    const updateCurrentPrayer = () => {
+      const current = getCurrentPrayer(prayers);
+      setCurrentPrayer(current);
+    };
+
+    updateCurrentPrayer();
+    const interval = setInterval(updateCurrentPrayer, 60000); // Update every minute
+
+    return () => clearInterval(interval);
+  }, [prayers]);
+
   return (
-    <div className="app" dir="rtl">
-      <header className="app-header">
-        {advertising && (
-          <img 
-            src={advertising} 
-            alt="פרסומת"
-            className="advertising-image"
-          />
-        )}
-        <h1>זמני תפילות</h1>
-      </header>
-      <main className="prayer-container">
-        <PrayerList 
-          title="שחרית"
-          data={prayers.sahrit}
-        />
-        <PrayerList 
-          title="מנחה"
-          data={prayers.mincha}
-        />
-        <PrayerList 
-          title="ערבית"
-          data={prayers.arvit}
-        />
-      </main>
-    </div>
+    <Router basename="/PrayerTimesWeb">
+      <div className="app" dir="rtl">
+        <header className="app-header">
+          {advertising && (
+            <img src={advertising} alt="פרסומת" className="advertising-image" />
+          )}
+          <h1>זמני תפילות</h1>
+          <Clock />
+          <HebrewDate />
+          <nav>
+            <Link to="/">ראשי</Link> |{' '}
+            <Link to="/shacharit">שחרית</Link> |{' '}
+            <Link to="/mincha">מנחה</Link> |{' '}
+            <Link to="/arvit">ערבית</Link>
+          </nav>
+        </header>
+
+        <main className="prayer-container">
+          <Routes>
+            <Route path="/" element={
+              <PrayerList 
+                title={currentPrayer?.title || 'טוען...'}
+                data={prayers[currentPrayer?.type]}
+              />
+            } />
+            <Route path="/shacharit" element={
+              <PrayerList title="שחרית" data={prayers.sahrit} />
+            } />
+            <Route path="/mincha" element={
+              <PrayerList title="מנחה" data={prayers.mincha} />
+            } />
+            <Route path="/arvit" element={
+              <PrayerList title="ערבית" data={prayers.arvit} />
+            } />
+          </Routes>
+        </main>
+      </div>
+    </Router>
   );
 }
 
