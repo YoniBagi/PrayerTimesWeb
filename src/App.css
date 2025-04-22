@@ -10,6 +10,7 @@
   margin-bottom: 40px;
   position: relative;
   padding-top: 10px;
+  min-height: 250px;
 }
 
 .advertising-image {
@@ -20,12 +21,15 @@
   position: absolute;
   left: 0;
   top: 0;
+  object-fit: contain;
+  max-height: 100%;
 }
 
 .prayer-container {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 20px;
+  margin-top: 20px;
 }
 
 h1 {
@@ -69,7 +73,7 @@ nav a:hover {
   border-radius: 12px;
   padding: 15px;
   margin: 20px 0;
-  max-width: 300px;
+  width: 300px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   position: absolute;
   right: 0;
@@ -77,5 +81,104 @@ nav a:hover {
 }
 
 .header-content {
-  margin-top: 180px;
+  margin-top: 250px;
+  clear: both;
+}
+
+/* Add responsive styles */
+@media screen and (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .app-header {
+    min-height: auto;
+    padding-top: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: static;
+  }
+
+  .advertising-image {
+    position: static;
+    margin: 10px auto;
+    max-width: 120px;
+    height: auto;
+  }
+
+  .header-info {
+    position: static;
+    margin: 10px auto;
+    width: 100%;
+    max-width: none;
+  }
+
+  .header-content {
+    margin-top: 20px;
+  }
+
+  h1 {
+    font-size: 2rem;
+    margin: 15px 0;
+  }
+
+  .prayer-container {
+    grid-template-columns: 1fr;
+  }
+
+  nav {
+    margin: 15px 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  nav a {
+    margin: 0;
+    padding: 8px 15px;
+    background: #f8f9fa;
+  }
+
+  main {
+    padding: 0 10px;
+  }
+}
+
+/* Additional adjustments for very small screens */
+@media screen and (max-width: 480px) {
+  .app {
+    padding: 5px;
+  }
+
+  h1 {
+    font-size: 1.8rem;
+  }
+
+  .clock {
+    font-size: 1.3rem;
+  }
+
+  .hebrew-date {
+    font-size: 1.1rem;
+  }
+
+  .prayer-list {
+    padding: 15px;
+  }
+
+  .prayer-list h2 {
+    font-size: 1.5rem;
+  }
+
+  .prayer-item h3 {
+    font-size: 1.1rem;
+  }
+}
+
+main {
+  width: 100%;
+  clear: both;
+  padding-top: 20px;
 } 

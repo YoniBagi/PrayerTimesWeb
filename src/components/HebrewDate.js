@@ -1,37 +1,51 @@
 import React, { useState, useEffect } from 'react';
+import { getMaqamForParasha, extractParashaName } from '../utils/maqamUtils';
 import './HebrewDate.css';
 
 function HebrewDate() {
   const [calendarData, setCalendarData] = useState(null);
+  const [maqam, setMaqam] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchHebrewDate = async () => {
+    const fetchCalendarData = async () => {
       try {
-        // Get current date in YYYY-MM-DD format
         const today = new Date();
         const dateStr = today.toISOString().split('T')[0];
         
-        const response = await fetch(
-          `https://www.hebcal.com/converter?cfg=json&date=${dateStr}&g2h=0&lg=he&gs=on&maj=on`
-        );
-        
-        if (!response.ok) {
+        // Fetch both Hebrew and English data
+        const [hebrewResponse, englishResponse] = await Promise.all([
+          fetch(`https://www.hebcal.com/converter?cfg=json&date=${dateStr}&g2h=0&lg=he&gs=on&maj=on`),
+          fetch(`https://www.hebcal.com/converter?cfg=json&date=${dateStr}&g2h=0&lg=en`)
+        ]);
+
+        if (!hebrewResponse.ok || !englishResponse.ok) {
           throw new Error('Failed to fetch calendar data');
         }
 
-        const data = await response.json();
-        setCalendarData(data);
+        const [hebrewData, englishData] = await Promise.all([
+          hebrewResponse.json(),
+          englishResponse.json()
+        ]);
+
+        // Set Hebrew data for display
+        setCalendarData(hebrewData);
+
+        // Get Maqam info from English data
+        const parashaName = extractParashaName(englishData.events);
+        const maqamName = parashaName ? getMaqamForParasha(parashaName) : null;
+        setMaqam(maqamName);
+        
         setError(null);
       } catch (error) {
-        console.error('Error fetching Hebrew date:', error);
+        console.error('Error fetching calendar data:', error);
         setError('שגיאה בטעינת נתוני לוח השנה');
       }
     };
 
-    fetchHebrewDate();
+    fetchCalendarData();
     // Update every hour
-    const interval = setInterval(fetchHebrewDate, 3600000);
+    const interval = setInterval(fetchCalendarData, 3600000);
     return () => clearInterval(interval);
   }, []);
 
@@ -70,6 +84,11 @@ function HebrewDate() {
               {event}
             </div>
           ))}
+          {maqam && (
+            <div className="event-item maqam-info">
+              מקאם {maqam}
+            </div>
+          )}
         </div>
       )}
     </div>

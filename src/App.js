@@ -80,25 +80,33 @@ function App() {
           </div>
         </header>
 
-        <main className="prayer-container">
-          <Routes>
-            <Route path="/" element={
-              <PrayerList 
-                title={currentPrayer?.title || 'טוען...'}
-                data={prayers[currentPrayer?.type]}
-              />
-            } />
-            <Route path="/shacharit" element={
+        <Routes>
+          <Route path="/" element={
+            <main>
+              <div className="prayer-container">
+                <PrayerList 
+                  title={currentPrayer?.title || 'טוען...'}
+                  data={prayers[currentPrayer?.type]}
+                />
+              </div>
+            </main>
+          } />
+          <Route path="/shacharit" element={
+            <main className="prayer-container">
               <PrayerList title="שחרית" data={prayers.sahrit} />
-            } />
-            <Route path="/mincha" element={
+            </main>
+          } />
+          <Route path="/mincha" element={
+            <main className="prayer-container">
               <PrayerList title="מנחה" data={prayers.mincha} />
-            } />
-            <Route path="/arvit" element={
+            </main>
+          } />
+          <Route path="/arvit" element={
+            <main className="prayer-container">
               <PrayerList title="ערבית" data={prayers.arvit} />
-            } />
-          </Routes>
-        </main>
+            </main>
+          } />
+        </Routes>
       </div>
     </Router>
   );
