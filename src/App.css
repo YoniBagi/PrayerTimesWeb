@@ -8,17 +8,18 @@
 
 .app-header {
   margin-bottom: 40px;
+  position: relative;
+  padding-top: 10px;
 }
 
 .advertising-image {
-  max-width: 300px;
+  max-width: 150px;
   height: auto;
-  margin-bottom: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+  position: absolute;
+  left: 0;
+  top: 0;
 }
 
 .prayer-container {
@@ -61,4 +62,20 @@ nav a {
 
 nav a:hover {
   background-color: #ecf0f1;
+}
+
+.header-info {
+  background: white;
+  border-radius: 12px;
+  padding: 15px;
+  margin: 20px 0;
+  max-width: 300px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.header-content {
+  margin-top: 180px;
 } 

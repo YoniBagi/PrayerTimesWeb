@@ -65,15 +65,19 @@ function App() {
           {advertising && (
             <img src={advertising} alt="פרסומת" className="advertising-image" />
           )}
-          <h1>זמני תפילות</h1>
-          <Clock />
-          <HebrewDate />
-          <nav>
-            <Link to="/">ראשי</Link> |{' '}
-            <Link to="/shacharit">שחרית</Link> |{' '}
-            <Link to="/mincha">מנחה</Link> |{' '}
-            <Link to="/arvit">ערבית</Link>
-          </nav>
+          <div className="header-info">
+            <Clock />
+            <HebrewDate />
+          </div>
+          <div className="header-content">
+            <h1>זמני תפילות</h1>
+            <nav>
+              <Link to="/">ראשי</Link> |{' '}
+              <Link to="/shacharit">שחרית</Link> |{' '}
+              <Link to="/mincha">מנחה</Link> |{' '}
+              <Link to="/arvit">ערבית</Link>
+            </nav>
+          </div>
         </header>
 
         <main className="prayer-container">
