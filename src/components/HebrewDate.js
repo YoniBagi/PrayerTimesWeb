@@ -15,7 +15,7 @@ function HebrewDate() {
         
         // Fetch both Hebrew and English data
         const [hebrewResponse, englishResponse] = await Promise.all([
-          fetch(`https://www.hebcal.com/converter?cfg=json&date=${dateStr}&g2h=0&lg=he&gs=on&maj=on`),
+          fetch(`https://www.hebcal.com/converter?cfg=json&date=${dateStr}&g2h=1&lg=he&gs=off`),
           fetch(`https://www.hebcal.com/converter?cfg=json&date=${dateStr}&g2h=0&lg=en`)
         ]);
 
