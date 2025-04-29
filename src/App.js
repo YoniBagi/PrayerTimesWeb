@@ -4,6 +4,7 @@ import './App.css';
 import PrayerList from './components/PrayerList';
 import Clock from './components/Clock';
 import HebrewDate from './components/HebrewDate';
+import Settings from './components/Settings';
 import { getCurrentPrayer } from './utils/timeUtils';
 
 function App() {
@@ -75,7 +76,8 @@ function App() {
               <Link to="/">ראשי</Link> |{' '}
               <Link to="/shacharit">שחרית</Link> |{' '}
               <Link to="/mincha">מנחה</Link> |{' '}
-              <Link to="/arvit">ערבית</Link>
+              <Link to="/arvit">ערבית</Link> |{' '}
+              <Link to="/settings">הגדרות</Link>
             </nav>
           </div>
         </header>
@@ -106,6 +108,7 @@ function App() {
               <PrayerList title="ערבית" data={prayers.arvit} />
             </main>
           } />
+          <Route path="/settings" element={<Settings />} />
         </Routes>
       </div>
     </Router>
